@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     resources :movies,               controller: 'movie',     only: [:index, :show, :create, :update, :destroy]
   end
 
+  resources :movies, controller: 'movie', only: [:index, :show, :create]
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
