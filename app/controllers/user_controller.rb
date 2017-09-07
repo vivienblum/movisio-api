@@ -12,6 +12,7 @@ class UserController < ApplicationController
 
   def create
     puts "ACTION CREATE"
+    render json: {status: 'OK', user: User.create(users_params) }
   end
 
   private
