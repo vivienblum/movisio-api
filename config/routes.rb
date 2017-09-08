@@ -4,8 +4,14 @@ Rails.application.routes.draw do
   root to: 'home#index'
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
+
+  get '/users/:user_id/movies' => 'user#get_movies'
+  post '/users/:user_id/movies' => 'user#add_movie'
+  # TODO add favorite or toggle
+  # TODO add watched or toggle
+
   resources :users, controller: 'user', only: [:index, :show, :create] do
-    resources :movies,               controller: 'movie',     only: [:index, :show, :create, :update, :destroy]
+    # resources :movies,               controller: 'movie',     only: [:index, :show, :create, :update, :destroy]
   end
 
   resources :movies, controller: 'movie', only: [:index, :show, :create]
