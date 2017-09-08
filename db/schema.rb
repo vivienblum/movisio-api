@@ -11,13 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170906140650) do
+ActiveRecord::Schema.define(version: 20170908124242) do
 
   create_table "movies", force: :cascade do |t|
     t.string   "title"
     t.integer  "runtime"
     t.float    "rate"
-    t.string   "image"
     t.text     "plot"
     t.string   "poster"
     t.datetime "created_at", null: false
