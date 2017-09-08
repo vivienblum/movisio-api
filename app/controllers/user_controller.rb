@@ -15,6 +15,18 @@ class UserController < ApplicationController
     render json: {status: 'OK', user: User.create(users_params) }
   end
 
+  def get_movies
+  end
+
+  def add_movie
+  end
+
+  def toggle_watched
+  end
+
+  def toggle_favorite
+  end
+
   private
 
   def users_params
