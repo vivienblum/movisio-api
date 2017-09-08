@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170908154414) do
+ActiveRecord::Schema.define(version: 20170908200616) do
 
   create_table "movies", force: :cascade do |t|
     t.string   "title"
@@ -33,12 +33,10 @@ ActiveRecord::Schema.define(version: 20170908154414) do
   end
 
   create_table "users_movies", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "movie_id"
-    t.boolean  "watched",    default: false
-    t.boolean  "favorite",   default: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.integer "user_id"
+    t.integer "movie_id"
+    t.boolean "watched",  default: false
+    t.boolean "favorite", default: false
   end
 
 end
