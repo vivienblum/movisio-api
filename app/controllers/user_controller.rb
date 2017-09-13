@@ -33,7 +33,11 @@ class UserController < ApplicationController
   def login_token
     # TODO test if password username match
     user = User.find_by(username: params[:username])
-    render json: { jwt: user.auth_token }
+    if user.password == params[:password]
+      render json: { jwt: user.auth_token }
+    else
+      render json: { error: "Wrong Password" }
+    end
   end
 
   def get_movies
