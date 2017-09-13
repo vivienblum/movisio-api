@@ -2,23 +2,20 @@ class UserController < ApplicationController
   before_action :set_user, only: [:get_movies, :add_movie, :toggle_watched, :toggle_favorite]
 
   def index
-    puts "ACTION INDEX"
     # TODO don't send password
     render json: {status: 'OK', users: User.all }
   end
 
   def show
-    puts "ACTION SHOW"
     render json: {status: 'OK', user: User.find(params[:id]) }
   end
 
   def create
-    puts "ACTION CREATE"
     render json: {status: 'OK', user: User.create(users_params) }
   end
 
   def get_movies
-    render json: {status: 'OK', movies: @user.users_movies }
+    render json: {status: 'OK', movies: @user.users_movies.eager_load(:movies) }
   end
 
   def add_movie
