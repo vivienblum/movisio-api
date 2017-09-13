@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
   get 'users/current' => 'user#current'
+  post 'users/login_token' => 'user#login_token'
 
   resources :users, controller: 'user', only: [:index, :create] do
     # get 'current' => 'user#current'

@@ -30,6 +30,12 @@ class UserController < ApplicationController
     end
   end
 
+  def login_token
+    # TODO test if password username match
+    user = User.find_by(username: params[:username])
+    render json: { jwt: user.auth_token }
+  end
+
   def get_movies
     render json: {status: 'OK', movies: current_user.users_movies.eager_load(:movies) }
   end
