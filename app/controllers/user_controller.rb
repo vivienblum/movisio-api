@@ -7,6 +7,7 @@ class UserController < ApplicationController
     render json: {status: 'OK', users: User.all }
   end
 
+  # DEPRECATED
   def show
     render json: {status: 'OK', user: User.find(params[:id]) }
   end
@@ -31,12 +32,15 @@ class UserController < ApplicationController
   end
 
   def login_token
-    # TODO test if password username match
-    user = User.find_by(username: params[:username])
-    if user.password == params[:password]
-      render json: { jwt: user.auth_token }
+    user = User.find_by(username: login_params[:username])
+    if !user.nil?
+      if user.password == params[:password]
+        render json: { jwt: user.auth_token }
+      else
+        render json: { error: "Wrong Password" }
+      end
     else
-      render json: { error: "Wrong Password" }
+      render json: { error: "No user found" }
     end
   end
 
@@ -61,7 +65,11 @@ class UserController < ApplicationController
   private
 
   def users_params
-    params.require(:user).permit!
+    params.require(:user).permit(:username, :password, :mail, :image)
+  end
+
+  def login_params
+    params.permit(:username, :password)
   end
 
 end
