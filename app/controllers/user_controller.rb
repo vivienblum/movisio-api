@@ -46,15 +46,20 @@ class UserController < ApplicationController
 
   def get_movies
     # render json: {status: 'OK', movies: current_user.users_movies.eager_load(:movies) }
-    # TODO get from params[:id]
     movies = []
-    current_user.users_movies.each do |user_movie|
-      movie = Movie.find(user_movie.movie_id).attributes.symbolize_keys
-      movie[:watched] = user_movie.watched
-      movie[:favorite] = user_movie.favorite
-      movies.push(movie)
+    user = User.find_by_id(params[:user_id])
+    if user.nil?
+      render json: { error: "No user found" }
+    else
+      user.users_movies.each do |user_movie|
+        movie = Movie.find(user_movie.movie_id).attributes.symbolize_keys
+        movie[:watched] = user_movie.watched
+        movie[:favorite] = user_movie.favorite
+        movies.push(movie)
+      end
+      render json: {status: 'OK', movies: movies }
     end
-    render json: {status: 'OK', movies: movies }
+
     # render json: {status: 'OK', movies: current_user.users_movies.includes(:movies) }
   end
 
