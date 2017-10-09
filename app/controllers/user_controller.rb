@@ -45,7 +45,16 @@ class UserController < ApplicationController
   end
 
   def get_movies
-    render json: {status: 'OK', movies: current_user.users_movies.eager_load(:movies) }
+    # render json: {status: 'OK', movies: current_user.users_movies.eager_load(:movies) }
+    movies = []
+    current_user.users_movies.each do |user_movie|
+      movie = Movie.find(user_movie.movie_id).attributes.symbolize_keys
+      movie[:watched] = user_movie.watched
+      movie[:favorite] = user_movie.favorite
+      movies.push(movie)
+    end
+    render json: {status: 'OK', movies: movies }
+    # render json: {status: 'OK', movies: current_user.users_movies.includes(:movies) }
   end
 
   def add_movie
