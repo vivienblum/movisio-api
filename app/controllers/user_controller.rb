@@ -36,7 +36,7 @@ class UserController < ApplicationController
     if user
       render json: { jwt: user.auth_token }
     else
-      render json: { error: "No user found or wrong password" }, status: 404
+      render json: { error: "No user found or wrong password" }, status: 401
     end
   end
 
