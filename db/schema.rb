@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171009192402) do
+ActiveRecord::Schema.define(version: 20171023203557) do
 
   create_table "movies", force: :cascade do |t|
     t.string   "title"
@@ -27,11 +27,11 @@ ActiveRecord::Schema.define(version: 20171009192402) do
   create_table "users", force: :cascade do |t|
     t.string   "username"
     t.string   "email"
-    t.string   "password"
+    t.string   "password_digest"
     t.string   "image"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.string   "auth_token", default: ""
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.string   "auth_token",      default: ""
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true

@@ -32,15 +32,11 @@ class UserController < ApplicationController
   end
 
   def login_token
-    user = User.find_by(username: login_params[:username])
-    if !user.nil?
-      if user.password == params[:password]
-        render json: { jwt: user.auth_token }
-      else
-        render json: { error: "Wrong Password" }
-      end
+    user = User.find_by(username: login_params[:username]).try(:authenticate, params[:password])
+    if user
+      render json: { jwt: user.auth_token }
     else
-      render json: { error: "No user found" }
+      render json: { error: "No user found or wrong password" }, status: 404
     end
   end
 
