@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171023203557) do
+ActiveRecord::Schema.define(version: 20171024143918) do
 
   create_table "movies", force: :cascade do |t|
     t.string   "title"
@@ -35,6 +35,8 @@ ActiveRecord::Schema.define(version: 20171023203557) do
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["username"], name: "index_users_on_username", unique: true
 
   create_table "users_movies", force: :cascade do |t|
     t.integer "user_id"
@@ -42,5 +44,7 @@ ActiveRecord::Schema.define(version: 20171023203557) do
     t.boolean "watched",  default: false
     t.boolean "favorite", default: false
   end
+
+  add_index "users_movies", ["user_id", "movie_id"], name: "index_users_movies_on_user_id_and_movie_id", unique: true
 
 end
