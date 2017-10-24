@@ -4,15 +4,20 @@ class UserController < ApplicationController
 
   def index
     # TODO don't send password
-    render json: {status: 'OK', users: User.all }
+    render json: { users: User.all }
   end
 
   def show
-    render json: {status: 'OK', user: User.find(params[:id]) }
+    render json: { user: User.find(params[:id]) }
   end
 
   def create
-    render json: {status: 'OK', user: User.create(users_params) }
+    user = User.create(users_params)
+    if user.errors.nil?
+      render json: { user: User.create(users_params) }
+    else
+      render json: { error: user.errors }, status: 403
+    end
   end
 
   def destroy
