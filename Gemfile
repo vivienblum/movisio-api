@@ -10,7 +10,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
-gem 'active_model_serializers'
+gem 'active_model_serializers',   '~> 0.10'
 gem 'rack-cors'
 gem 'bcrypt', '~> 3.1.7'
 

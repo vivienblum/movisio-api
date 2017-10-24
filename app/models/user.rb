@@ -1,5 +1,9 @@
 class User < ActiveRecord::Base
   validates :auth_token, uniqueness: true
+  validates_presence_of :username
+  validates_uniqueness_of :username
+  validates_uniqueness_of :email
+  validates_length_of :password, maximum: 72, minimum: 8, allow_nil: true, allow_blank: false
 
   has_many :users_movies
   has_many :movies, :through => :users_movies

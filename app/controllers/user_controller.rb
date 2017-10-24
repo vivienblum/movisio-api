@@ -1,5 +1,5 @@
 class UserController < ApplicationController
-  before_action :authenticate_with_token!, only: [:show, :current, :update, :destroy]
+  before_action :authenticate_with_token!, only: [:show, :current, :update, :destroy, :add_movie, :set_watched, :set_favorite]
   respond_to :json
 
   def index
@@ -7,7 +7,6 @@ class UserController < ApplicationController
     render json: {status: 'OK', users: User.all }
   end
 
-  # DEPRECATED
   def show
     render json: {status: 'OK', user: User.find(params[:id]) }
   end
@@ -41,11 +40,10 @@ class UserController < ApplicationController
   end
 
   def get_movies
-    # render json: {status: 'OK', movies: current_user.users_movies.eager_load(:movies) }
     movies = []
     user = User.find_by_id(params[:user_id])
     if user.nil?
-      render json: { error: "No user found" }
+      render json: { error: "No user found" }, status: 422
     else
       user.users_movies.each do |user_movie|
         movie = Movie.find(user_movie.movie_id).attributes.symbolize_keys
@@ -53,25 +51,32 @@ class UserController < ApplicationController
         movie[:favorite] = user_movie.favorite
         movies.push(movie)
       end
-      render json: {status: 'OK', movies: movies }
+      render json: { movies: movies }
     end
-
-    # render json: {status: 'OK', movies: current_user.users_movies.includes(:movies) }
   end
 
   def add_movie
-    # TODO disable duplicate
+    # TODO disable duplicate and addign movie which doesn't exist
     user_movie = UsersMovie.create(user_id: current_user.id, movie_id: params[:movie_id])
-    movie = Movie.find(user_movie.movie_id).attributes.symbolize_keys
-    movie[:watched] = user_movie.watched
-    movie[:favorite] = user_movie.favorite
-    render json: {status: 'OK', movie: movie }
+    movie = movie_user(user_movie)
+    render json: { movie: movie }
   end
 
-  def toggle_watched
+  def set_watched
+    user_movie = UsersMovie.find_by(user_id: current_user.id, movie_id: params[:movie_id])
+    if user_movie.nil?
+      render json: { error: "Movie doesn't exist" }, status: 422
+    else
+      user_movie.watched = params[:watched]
+      user_movie.save
+      movie = movie_user(user_movie)
+      render json: { movie: movie }
+    end
   end
 
-  def toggle_favorite
+  def set_favorite
+    puts params[:movie_id]
+    render json: { movie: nil }
   end
 
   def current
@@ -86,6 +91,13 @@ class UserController < ApplicationController
 
   def login_params
     params.permit(:username, :password)
+  end
+
+  def movie_user user_movie
+    movie = Movie.find(user_movie.movie_id).attributes.symbolize_keys
+    movie[:watched] = user_movie.watched
+    movie[:favorite] = user_movie.favorite
+    return movie
   end
 
 end
