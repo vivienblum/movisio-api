@@ -11,7 +11,7 @@ class MovieController < ApplicationController
   def create
     movie = Movie.create(movies_params)
     puts movie.errors.inspect
-    if movie.errors.nil?
+    if movie.valid?
       render json: { movie: movie }
     else
       render json: { error: movie.errors }, status: 403

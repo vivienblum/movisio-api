@@ -3,18 +3,21 @@ class UserController < ApplicationController
   respond_to :json
 
   def index
-    # TODO don't send password
-    render json: { users: User.all }
+    users = []
+    User.all.each do |user|
+      users.push(user_secure(user))
+    end
+    render json: { users: users }
   end
 
   def show
-    render json: { user: User.find(params[:id]) }
+    render json: { user: user_secure(User.find(params[:id])) }
   end
 
   def create
     user = User.create(users_params)
-    if user.errors.nil?
-      render json: { user: user }
+    if user.valid?
+      render json: { user: user_secure(user) }
     else
       render json: { error: user.errors }, status: 403
     end
@@ -155,6 +158,12 @@ class UserController < ApplicationController
     movie[:watched] = user_movie.watched
     movie[:favorite] = user_movie.favorite
     return movie
+  end
+
+  def user_secure user
+    new_user = user.attributes.symbolize_keys
+    new_user.delete :password_digest
+    return new_user
   end
 
 end
