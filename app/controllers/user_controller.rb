@@ -14,7 +14,7 @@ class UserController < ApplicationController
   def create
     user = User.create(users_params)
     if user.errors.nil?
-      render json: { user: User.create(users_params) }
+      render json: { user: user }
     else
       render json: { error: user.errors }, status: 403
     end

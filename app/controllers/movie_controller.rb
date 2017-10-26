@@ -9,7 +9,13 @@ class MovieController < ApplicationController
   end
 
   def create
-    render json: { movie: Movie.create(movies_params) }
+    movie = Movie.create(movies_params)
+    puts movie.errors.inspect
+    if movie.errors.nil?
+      render json: { movie: movie }
+    else
+      render json: { error: movie.errors }, status: 403
+    end
   end
 
   private
