@@ -61,9 +61,14 @@ class UserController < ApplicationController
   end
 
   def add_movie
-    # TODO disable duplicate and addign movie which doesn't exist
+    # TODO addign movie which doesn't exist
     user_movie = UsersMovie.create(user_id: current_user.id, movie_id: params[:movie_id])
-    render json: { movie: movie_user(user_movie) }
+    if user_movie.valid?
+      render json: { movie: movie_user(user_movie) }
+    else
+      render json: { error: user_movie.errors }, status: 403
+    end
+
   end
 
   def set_watched

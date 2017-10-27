@@ -10,7 +10,6 @@ class MovieController < ApplicationController
 
   def create
     movie = Movie.create(movies_params)
-    puts movie.errors.inspect
     if movie.valid?
       render json: { movie: movie }
     else
