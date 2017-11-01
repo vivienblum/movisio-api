@@ -105,7 +105,6 @@ class UserController < ApplicationController
       puts user.users_movies.ids
       user.users_movies.each do |user_movie|
         movie = movie_user(user_movie)
-        movie[:owned] = true
         movies.push(movie)
       end
       ids = []
@@ -162,6 +161,7 @@ class UserController < ApplicationController
     movie = Movie.find(user_movie.movie_id).attributes.symbolize_keys
     movie[:watched] = user_movie.watched
     movie[:favorite] = user_movie.favorite
+    movie[:owned] = true
     return movie
   end
 
