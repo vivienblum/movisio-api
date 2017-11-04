@@ -19,7 +19,13 @@ class UserController < ApplicationController
     if user.valid?
       render json: { user: user_secure(user) }
     else
-      render json: { error: user.errors }, status: 403
+      if user.errors[:username].any? && user.errors[:email].any?
+        render json: { error: user.errors }, status: 420
+      elsif user.errors[:email].any?
+        render json: { error: user.errors }, status: 421
+      else
+        render json: { error: user.errors }, status: 422
+      end
     end
   end
 
