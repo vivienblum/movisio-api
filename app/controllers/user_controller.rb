@@ -144,6 +144,8 @@ class UserController < ApplicationController
       render json: { error: "Movie doesn't exist" }, status: 422
     else
       movie = Movie.find(user_movie.movie_id)
+      movie = movie.attributes.symbolize_keys
+      movie[:owned] = false
       user_movie.destroy
       render json: { movie: movie }
     end
